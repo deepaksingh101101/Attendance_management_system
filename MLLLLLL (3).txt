@@ -1,0 +1,341 @@
+
+1.USING LEN(),FIND(),DECODE(),ISALPHA(),ISDIGIT()
+CODE----
+   len(text)
+   text.find("jo bhi text find krna hai ")
+   text.isaplha()
+   text.isdigit()
+   text.count()
+
+2.UPDATING,SLICING,INDEXING
+CODE---
+   my_list=[1,2,3,4,5,6,7,8,9,0]
+   sliced_list=mylist[1:4]
+   element=my_list[1]
+   my_list.append(2)
+   my_list.extend([3])
+   my_list.insert(6,7)
+   my_list.remove(3)
+   my_list.reverse()
+   my_list.sort()
+
+3.MAX(),MIN(),LEN().TUPLE()
+CODE---
+   max=max(my_list)
+   min=min(my_list)
+   tuple=tuple(my_list)
+
+4.DICTINORY ME KUCH KRNA HOTO --UPDATE(),VALUES(),GET(),CLEAR(),COPY(),TYPE(),LEN()
+CODE----
+   dict={'name':'ayush','age':21,'city':'indore'}
+   dict['age']=26
+--------------------------------------------------------------------------------------------------------------------------   
+
+5.PCA
+ code-----
+    
+import numpy as np
+from sklearn.decomposition import PCA
+
+# Create the data matrix
+data = np.array([[2.5, 2.4],
+                 [0.5, 0.7],
+                 [2.2, 2.9],
+                 [1.9, 2.2],
+                 [3.1, 3.0],
+                 [2.3, 2.7],
+                 [2.0, 1.6],
+                 [1.0, 1.1],
+                 [1.5, 1.6],
+                 [1.1, 0.9])
+
+# Calculate the mean of the data
+mean_data = np.mean(data, axis=0)
+
+# Center the data by subtracting the mean
+centered_data = data - mean_data
+
+# Print the centered data
+print("Centered Data:")
+print(centered_data)
+
+# Initialize the PCA model with the number of components you want
+pca = PCA(n_components=1)  # For example, retaining 1 principal component
+
+# Fit and transform the centered data
+lower_dimensional_data = pca.fit_transform(centered_data)
+
+# The result is your centered data transformed to the lower-dimensional space
+print("Centered Data in the lower-dimensional space:")
+print(lower_dimensional_data)
+
+--------------------------------------------------------------------------------------------------------
+
+6. Implement Linear Regression of the given datasets.
+
+X 3 8 9 13 3 6 11 21 1 16
+
+Y 30 57 64 72 36 43 59 90 20 83
+
+CODE-----
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+# Define your data
+X = np.array([3, 8, 9, 13, 3, 6, 11, 21, 1, 16]).reshape(-1, 1)
+Y = np.array([30, 57, 64, 72, 36, 43, 59, 90, 20, 83])
+
+# Create and fit the linear regression model
+model = LinearRegression()
+model.fit(X, Y)
+
+# Make predictions and calculate the coefficients
+Y_pred = model.predict(X)
+slope = model.coef_[0]
+intercept = model.intercept_
+
+# Print the coefficients
+print(f"Slope (Coefficient): {slope}")
+print(f"Intercept: {intercept}")
+
+# Visualize the data points and the regression line
+plt.scatter(X, Y, label="Data points")
+plt.plot(X, Y_pred, color='red', label="Regression Line")
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.legend()
+plt.show()
+
+---------------------------------------------------------------------------------------------------------------
+
+7.LINEAR REGRESSION WITH STOCHASTIC GRADIENT DESCENT METHOD
+CODE----
+
+import numpy as np
+from sklearn.linear_model import SGDRegressor
+import matplotlib.pyplot as plt
+
+# Define your data
+X = np.array([3, 8, 9, 13, 3, 6, 11, 21, 1, 16]).reshape(-1, 1)
+Y = np.array([30, 57, 64, 72, 36, 43, 59, 90, 20, 83])
+
+# Create and fit the SGDRegressor model
+model = SGDRegressor(max_iter=1000, alpha=0.01, random_state=42)  # You can adjust the hyperparameters as needed
+model.fit(X, Y)
+
+# Make predictions
+Y_pred = model.predict(X)
+
+# Print the coefficients
+slope = model.coef_[0]
+intercept = model.intercept_
+print(f"Slope (Coefficient): {slope}")
+print(f"Intercept: {intercept}")
+
+# Visualize the data points and the regression line
+plt.scatter(X, Y, label="Data points")
+plt.plot(X, Y_pred, color='red', label="Regression Line (SGD)")
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.legend()
+plt.show()
+---------------------------------------------------------------------------------------------------------------------------------
+
+8.LINEAR REGRESSION USING PLOT DIFFERENT VALUES OF ALPHA FOR REGULARIZATION USIND LASSO
+
+CODE----
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression, LassoCV
+from sklearn.metrics import mean_squared_error
+
+Load your dataset (adjust this part to load your specific dataset)
+ df = pd.read_csv('your_dataset.csv')
+ X = df[features]  # Specify the features you want to use
+ y = df[target]    # Specify the target variable
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and fit the Linear Regression model
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = lr_model.predict(X_test)
+
+# Calculate and print the Mean Squared Error (MSE) for Linear Regression
+mse_lr = mean_squared_error(y_test, y_pred)
+print(f"Mean Squared Error (MSE) for Linear Regression: {mse_lr}")
+
+# Create and fit the LASSO model with different alpha values
+alphas = np.logspace(-6, 6, 13)  # A range of alpha values to try
+lasso_model = LassoCV(alphas=alphas, cv=5)
+lasso_model.fit(X_train, y_train)
+
+# Find the best alpha value
+best_alpha = lasso_model.alpha_
+print(f"Best alpha value for LASSO: {best_alpha}")
+
+# Make predictions with LASSO model
+y_pred_lasso = lasso_model.predict(X_test)
+
+# Calculate and print the MSE for LASSO
+mse_lasso = mean_squared_error(y_test, y_pred_lasso)
+print(f"Mean Squared Error (MSE) for LASSO: {mse_lasso}")
+
+# Plot different alpha values for LASSO
+m_log_alphas = -np.log10(lasso_model.alphas_)
+
+plt.figure()
+plt.plot(m_log_alphas, lasso_model.mse_path_, ':')
+plt.plot(m_log_alphas, lasso_model.mse_path_.mean(axis=-1), 'k', label='Average across the folds', linewidth=2)
+plt.axvline(-np.log10(best_alpha), linestyle='--', color='k', label='Best alpha')
+plt.legend()
+plt.xlabel('-log(alpha)')
+plt.ylabel('Mean square error')
+plt.title('Mean square error on each fold: coordinate descent')
+plt.axis('tight')
+plt.show()
+----------------------------------------------------------------------------------------------------------------------------------------
+9. LOGISTIC AMD MULTIPLE LOGISTIC REGRESSION AND MEASURE ACCURACY
+
+CODDE---
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.datasets import load_iris
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Implement binary logistic regression (e.g., classifying one class vs. the rest)
+binary_logistic_model = LogisticRegression(solver='liblinear')
+binary_logistic_model.fit(X_train, y_train)
+
+# Predict the test data
+y_pred_binary = binary_logistic_model.predict(X_test)
+
+# Calculate accuracy for binary logistic regression
+accuracy_binary = accuracy_score(y_test, y_pred_binary)
+print(f"Accuracy for binary logistic regression: {accuracy_binary * 100:.2f}%")
+
+# Print the confusion matrix for binary logistic regression
+confusion_matrix_binary = confusion_matrix(y_test, y_pred_binary)
+print("Confusion Matrix for Binary Logistic Regression:")
+print(confusion_matrix_binary)
+
+# Implement multinomial logistic regression (all classes)
+multinomial_logistic_model = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+multinomial_logistic_model.fit(X_train, y_train)
+
+# Predict the test data
+y_pred_multinomial = multinomial_logistic_model.predict(X_test)
+
+# Calculate accuracy for multinomial logistic regression
+accuracy_multinomial = accuracy_score(y_test, y_pred_multinomial)
+print(f"Accuracy for multinomial logistic regression: {accuracy_multinomial * 100:.2f}%")
+
+# Print the confusion matrix for multinomial logistic regression
+confusion_matrix_multinomial = confusion_matrix(y_test, y_pred_multinomial)
+print("Confusion Matrix for Multinomial Logistic Regression:")
+print(confusion_matrix_multinomial)
+----------------------------------------------------------------------------------------------------------------------------------------
+10. IMPORTANT*****************
+
+1. Apply Logistic regression on the given “Diabetics” datasets (diabetes_zero.csv)
+
+To find the accuracy of the model.
+
+2. Preprocess the given data ( diabetes_null.csv) by deleting the records having missing values and perform the Logistics regression to find out the accuracy of the model.
+
+3. Preprocess the given data ( diabetes_null.csv) by replacing the missing values with the
+
+mean of the corresponding columns and perform the Logistics regression to find out the accuracy of the model by display the Confusion Matrix
+
+4. Apply linear regression on “tips” datasets from seaborn package and find the Mean Absolute Error, Mean Squared Error, Root Mean Squared Error and R2-score.
+
+
+
+CODE----
+
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import numpy as np
+import seaborn as sns
+
+# Task 1: Logistic Regression on "diabetes_zero.csv"
+data = pd.read_csv("diabetes_zero.csv")
+X = data.drop('Outcome', axis=1)
+y = data['Outcome']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+logistic_model = LogisticRegression()
+logistic_model.fit(X_train, y_train)
+y_pred = logistic_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Task 1: Accuracy of the Logistic Regression model: {accuracy * 100:.2f}%")
+
+# Task 2: Preprocess "diabetes_null.csv" by deleting records with missing values
+data = pd.read_csv("diabetes_null.csv")
+data_cleaned = data.dropna()
+X = data_cleaned.drop('Outcome', axis=1)
+y = data_cleaned['Outcome']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+logistic_model = LogisticRegression()
+logistic_model.fit(X_train, y_train)
+y_pred = logistic_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Task 2: Accuracy after removing records with missing values: {accuracy * 100:.2f}%")
+
+# Task 3: Preprocess "diabetes_null.csv" by replacing missing values with the mean
+data = pd.read_csv("diabetes_null.csv")
+data_mean_filled = data.fillna(data.mean())
+X = data_mean_filled.drop('Outcome', axis=1)
+y = data_mean_filled['Outcome']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+logistic_model = LogisticRegression()
+logistic_model.fit(X_train, y_train)
+y_pred = logistic_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Task 3: Accuracy after filling missing values with the mean: {accuracy * 100:.2f}%")
+
+# Task 4: Linear Regression on "tips" dataset from Seaborn
+tips = sns.load_dataset("tips")
+X = tips[['total_bill']]
+y = tips['tip']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+linear_model = LinearRegression()
+linear_model.fit(X_train, y_train)
+y_pred = linear_model.predict(X_test)
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, y_pred)
+print(f"Task 4: Mean Absolute Error (MAE): {mae:.2f}")
+print(f"Task 4: Mean Squared Error (MSE): {mse:.2f}")
+print(f"Task 4: Root Mean Squared Error (RMSE): {rmse:.2f}")
+print(f"Task 4: R2-score: {r2:.2f}")
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
